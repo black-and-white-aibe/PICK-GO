@@ -1,0 +1,187 @@
+/* 글로벌 스타일 */
+body {
+  background-color: #ffffff;
+  color: #000;
+}
+
+/* 카드 (공통) */
+.card {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 내 이미지 */
+.card-img-size {
+  width: 150px;
+  height: 150px;
+  padding: 5px;
+  overflow: hidden;
+}
+.card-img-size img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 카드 내 여백 */
+.card-comment-padding {
+  padding: 15px;
+}
+
+/* AI 추천 일정 영역 */
+.ai-schedule {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.ai-schedule-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-right: 50px;
+}
+.ai-schedule-copy-button {
+  border: 1px solid #ccc;
+}
+.ai-schedule-scroll-area {
+  max-width: 600px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px;
+}
+.ai-schedule-card {
+  margin-bottom: 15px;
+}
+.ai-schedule-card .card-body {
+  text-align: center;
+}
+
+/* 스크롤바 숨기기 (Firefox, IE, Edge, Chrome, Safari) */
+.review-scroll-area,
+.ai-schedule-scroll-area {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.review-scroll-area::-webkit-scrollbar,
+.ai-schedule-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* 여행 후기 카드 텍스트 */
+.review-item-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.review-item-content {
+  font-size: 0.9rem;
+  color: #333;
+}
+.collapse-content {
+  margin-top: 10px;
+  color: #555;
+}
+
+/* 후기 작성 폼 */
+.form-control,
+.form-select {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+.form-control::placeholder {
+  color: #999;
+}
+.btn-upload {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #000;
+}
+.btn-upload:hover {
+  background-color: #333;
+}
+
+/* 캐러셀 */
+.carousel-vlog {
+  max-height: 100%;
+}
+.carousel-item {
+  padding-top: 10px;
+  height: 600px;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(0%);
+}
+.carousel-control-margin {
+  margin: 15vh 0;
+}
+
+/* 스크롤바 전체 */
+::-webkit-scrollbar {
+  width: 8px; /* 세로 스크롤바 너비 */
+  height: 8px; /* 가로 스크롤바 높이 */
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 수정: 여행 후기 영역 최대 높이 및 스크롤 활성화 */
+.review-scroll-area {
+  padding: 5px;
+  max-height: 500px; /* 필요에 따라 조정 */
+  overflow-y: auto;
+}
+
+/* (선택) 각 후기 카드의 최대 높이 지정 - 넘치는 내용은 숨김 */
+.review-scroll-area .card {
+  max-height: 200px; /* 필요에 따라 조정 */
+  overflow: hidden;
+}
+
+/* 반응형 스타일 */
+/* max-width 값 = 여백 없애는 기준 */
+@media (max-width: 1000px) {
+  .screen-container {
+    padding: 0 20px;
+  }
+
+  /* 햄버거 메뉴 안의 네비게이션 링크 스타일 */
+  .navbar-collapse {
+    background-color: #ffffff;
+
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+  }
+
+  .navbar-collapse .nav-link {
+    display: block;
+    padding: 10px 20px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+body {
+  scrollbar-gutter: stable; /* 스크롤바 공간을 항상 확보 */
+}

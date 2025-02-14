@@ -1,0 +1,89 @@
+/* 카드 포함 영역 */
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+/* 카드 */
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  width: 45%;
+  height: 55vh;
+  cursor: pointer;
+}
+/* 카드 호버링 */
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+/* 카드 안에 들어가는 내용 */
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* 카드 글자 */
+.card-title {
+  font-size: 3vh;
+}
+
+/* 라운드 정보 */
+.round-info {
+  text-align: center;
+  font-size: 3.5vh;
+  font-weight: normal;
+  margin: 20px 0;
+  margin-bottom: 50px;
+}
+
+/* 제목 */
+.title-text {
+  text-align: center;
+  font-size: 6vh;
+  font-weight: normal;
+  margin: 20px 0;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+/* 선택된 아이템 애니메이션 (확대 효과) */
+@keyframes enlarge {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1); /* 선택된 아이템을 1.2배로 확대 */
+  }
+}
+
+/* 선택되지 않은 아이템 애니메이션 (페이드 아웃 효과) */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0; /* 선택되지 않은 아이템은 사라지게 */
+  }
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 선택된 아이템에 적용할 클래스 */
+.selected {
+  animation: enlarge 0.5s ease-in-out forwards;
+}
+
+/* 선택되지 않은 아이템에 적용할 클래스 */
+.unselected {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}

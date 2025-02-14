@@ -1,0 +1,74 @@
+/*폰트*/
+body {
+  font-family: "Jua", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*전체 항목들 좌우 여백*/
+.screen-container {
+  padding: 0 240px;
+  /* padding: 0 240px 0px 232px; */
+  /* margin-right: 8px; */
+}
+
+/* 상단 바 하단 여백*/
+.menu {
+  margin-bottom: 50px;
+}
+
+/* 네비게이션 바 스타일 */
+.custom-navbar {
+  height: 80px;
+  padding: 0 20px;
+  background-color: #ffffff !important;
+}
+
+/* 랭킹 보기 글자 스타일 */
+.navbar-nav .nav-link {
+  color: #000000 !important; /* 글자를 검은색으로 설정 */
+  font-weight: 500; /* 글자 두께를 살짝 강조 */
+  font-size: 16px; /* 글자 크기 조정 */
+}
+
+/* 랭킹 보기 글자 호버 효과 */
+.navbar-nav .nav-link:hover,
+.navbar-collapse .nav-link:hover {
+  color: #333333 !important; /* 마우스를 올렸을 때 약간 어두운 검은색 */
+}
+
+/* 로고 이미지 스타일 */
+.logo {
+  width: 50px; /* 로고 크기 */
+  height: auto;
+}
+
+/* 반응형 스타일 */
+/* max-width 값 = 여백 없애는 기준 */
+@media (max-width: 768px) {
+  .screen-container {
+    padding: 0 20px;
+  }
+
+  /* 햄버거 메뉴 안의 네비게이션 링크 스타일 */
+  .navbar-collapse {
+    background-color: #ffffff;
+
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+  }
+
+  .navbar-collapse .nav-link {
+    display: block;
+    padding: 10px 20px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+body {
+  scrollbar-gutter: stable; /* 스크롤바 공간을 항상 확보 */
+}
