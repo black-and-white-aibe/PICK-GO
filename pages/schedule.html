@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pick & Go - 여행 일정</title>
+    <!-- 부트스트랩 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Web Font 의존성 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <!-- AOS CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/schedule.css" />
+  </head>
+  <body>
+    <div class="screen-container scroll-container">
+      <!-- 네비게이션 바 -->
+      <div class="menu">
+        <nav
+          class="navbar navbar-expand-md navbar-light bg-light custom-navbar"
+        >
+          <div class="container-fluid">
+            <!-- 좌측: 로고 -->
+            <a class="navbar-brand ms-3" href="#">
+              <img src="../assets/logo.png" alt="로고" class="logo" />
+            </a>
+
+            <!-- 토글 버튼 (화면이 작을 때 메뉴 버튼으로 변경) -->
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 우측: 랭킹 보기 -->
+            <div
+              class="collapse navbar-collapse justify-content-end"
+              id="navbarNav"
+            >
+              <ul class="navbar-nav me-3">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">랭킹 보기</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <!-- 새로운 요소 추가 -->
+
+      <!-- 메인 컨테이너 -->
+      <div class="container mt-5">
+        <!-- 상단 영역: 좌측(여행 브이로그), 우측(AI 추천 일정 카드) -->
+        <div class="row mb-5">
+          <!-- 여행 브이로그 (좌측) -->
+          <div class="col-md-6" id="vlogSection">
+            <h2 class="text-left">여행 브이로그</h2>
+            <div
+              id="vlogCarousel"
+              class="carousel slide carousel-vlog"
+              data-bs-ride="carousel"
+              data-bs-interval="false"
+            >
+              <div class="carousel-inner">
+                <!-- 슬라이드 1 -->
+                <div class="carousel-item active">
+                  <iframe
+                    src="https://www.youtube.com/embed/SZc_JAPevIQ?si=BW5Rs7Y_9cw1XQXO"
+                    frameborder="0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    style="width: 100%; height: 100%"
+                  ></iframe>
+                </div>
+
+                <!-- 추가 슬라이드 작성 가능 -->
+              </div>
+              <!-- 이전/다음 버튼 -->
+              <button
+                class="carousel-control-prev carousel-control-margin"
+                type="button"
+                data-bs-target="#vlogCarousel"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">이전</span>
+              </button>
+              <button
+                class="carousel-control-next carousel-control-margin"
+                type="button"
+                data-bs-target="#vlogCarousel"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">다음</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI 추천 여행 일정 (우측, 카드 형식) -->
+          <div class="col-md-6" id="aiSchedule" class="ai-schedule">
+            <div class="ai-schedule-header">
+              <h2 class="text-left align-text-bottom">AI 추천 여행 일정</h2>
+              <button type="button" class="btn btn-sm ai-schedule-copy-button">
+                <img src="../assets/icon/copy-icon.png" alt="" />
+              </button>
+            </div>
+
+            <div class="ai-schedule-scroll-area">
+              <!-- AI 일정 카드 Day 1 -->
+              <div class="ai-schedule-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Day 1</h5>
+                    <p>
+                      <strong>09:00</strong> - 서울역 출발, 부산역 도착 후 숙소
+                      체크인
+                    </p>
+                    <p>
+                      <strong>12:00</strong> - 해운대 해수욕장 산책, 해변 근처
+                      맛집 탐방
+                    </p>
+                    <p>
+                      <strong>14:00</strong> - 알록달록한 집들이 옹기종기
+                      모여있는 감천문화마을을 탐방하고 사진 찍기 좋은 장소를
+                      찾아봅니다.
+                    </p>
+                    <p>
+                      <strong>16:00</strong> - 부산의 대표적인 해운대 해변을
+                      방문하여 산책하고 아름다운 바다를 배경으로 인생샷을
+                      찍습니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- AI 일정 카드 Day 2 -->
+              <div class="ai-schedule-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Day 2</h5>
+                    <p>
+                      <strong>09:00</strong> - 광안대교 전망 드라이브, 광안리
+                      카페 거리 구경
+                    </p>
+                    <p>
+                      <strong>13:00</strong> - 태종대 유람선 투어, 부산 명물
+                      씨앗호떡 맛보기
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- AI 일정 카드 Day 3 -->
+              <div class="ai-schedule-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Day 3</h5>
+                    <p>
+                      <strong>10:00</strong> - 국제시장 &amp; BIFF 거리 구경,
+                      먹거리 탐방
+                    </p>
+                    <p>
+                      <strong>14:00</strong> - 감천문화마을 투어 및 사진 촬영
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- AI 일정 카드 Day 4 -->
+              <div class="ai-schedule-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Day 4</h5>
+                    <p><strong>09:00</strong> - 부산 영화 체험 박물관 방문</p>
+                    <p>
+                      <strong>15:00</strong> - 남포동 쇼핑 및 깡통시장 먹거리
+                      투어
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- AI 일정 카드 Day 5 -->
+              <div class="ai-schedule-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Day 5</h5>
+                    <p>
+                      <strong>10:00</strong> - 부산 타워 전망대 방문 및 기념사진
+                      촬영
+                    </p>
+                    <p><strong>13:00</strong> - 자갈치시장 해산물 맛보기</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 여행 후기 (하단) -->
+        <div class="row mb-5" id="reviewSection">
+          <div class="col-12">
+            <h2 class="text-center mb-4">여행 후기</h2>
+            <!-- 후기 목록 (스크롤) -->
+            <div class="row review-scroll-area mb-4" data-aos="fade-up">
+              <!-- 후기 카드 예시 1 -->
+              <div class="col-12 mb-3">
+                <div class="card card-comment-padding">
+                  <div class="row g-0">
+                    <div class="col-md-3 card-img-size">
+                      <img
+                        src="../assets/logo.png"
+                        class="img-fluid rounded-circle"
+                        alt="썸네일"
+                      />
+                    </div>
+                    <div class="col-md-10">
+                      <div class="card-body">
+                        <div class="review-item-title">
+                          해운대 해수욕장 너무 좋아요
+                        </div>
+                        <!-- 자세히 보기 버튼: collapse를 토글하고 버튼은 숨김 -->
+                        <button
+                          id="showDetailButton"
+                          class="btn btn-sm btn-outline-secondary"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseDetail1"
+                          aria-expanded="false"
+                          aria-controls="collapseDetail1"
+                          onclick="this.style.display='none';"
+                        >
+                          자세히 보기
+                        </button>
+                        <!-- 상세 후기가 들어있는 collapse 영역 -->
+                        <div
+                          class="collapse collapse-content"
+                          id="collapseDetail1"
+                        >
+                          <p>
+                            친구들과 함께 한 부산 여행이었는데, 해운대의
+                            분위기가 너무 좋아서 계속 머물고 싶었어요. 밤에 보는
+                            해변도 아름다웠고, 주변 카페와 음식점이 많아
+                            편리했답니다.
+                          </p>
+                          <!-- 카드 접기 버튼: collapse를 토글하고 자세히 보기 버튼을 다시 보이게 함 -->
+                          <button
+                            class="btn btn-sm btn-outline-secondary mt-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDetail1"
+                            aria-expanded="true"
+                            aria-controls="collapseDetail1"
+                            onclick="document.getElementById('showDetailButton').style.display='block';"
+                          >
+                            카드 접기
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 추가 여행 후기 카드 작성 가능 -->
+            </div>
+            <!-- 후기 작성 폼 -->
+            <div class="review" data-aos="fade-up">
+              <h2 class="text-center mb-4">후기 작성하기</h2>
+              <div class="card p-3">
+                <h4 class="mb-3">후기 작성하기</h4>
+                <form>
+                  <div class="mb-3">
+                    <label for="reviewImage" class="form-label"
+                      >이미지 업로드</label
+                    >
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="reviewImage"
+                      accept="image/*"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="reviewTitle" class="form-label"
+                      >후기 제목</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="reviewTitle"
+                      placeholder="제목을 입력하세요."
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="reviewContent" class="form-label"
+                      >후기 내용</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="reviewContent"
+                      rows="3"
+                      placeholder="자세한 후기를 남겨주세요."
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-upload">
+                    글 업로드
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Toast 메시지 (복사되었습니다.) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="copyToast"
+        class="toast align-items-center"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body">복사되었습니다.</div>
+          <button
+            type="button"
+            class="btn-close me-2 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 부트스트랩 JS -->
+    <!-- AOS JS (body 태그 닫기 전에 추가) -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/schedule.js"></script>
+    <script>
+      AOS.init({
+        duration: 800, // 애니메이션 지속 시간 (밀리초)
+        easing: "ease-in-out", // 이징 효과
+        once: false, // 스크롤 시마다 애니메이션 실행 (false일 경우 요소가 뷰포트에 들어올 때마다 애니메이션 실행)
+        mirror: true, // 요소가 뷰포트를 벗어나면 (위로 스크롤 등) 반대 애니메이션 실행
+      });
+    </script>
+  </body>
+</html>
