@@ -12,6 +12,7 @@
 
   /**
    * 지역명을 한글로 변환
+   * 파라미터 전달을 한글로 해야 함
    */
   function getKoreanRegion(region) {
     switch (region) {
@@ -100,6 +101,10 @@
     }
   }
 
+  /**
+   * 파라미터로 받아온 테마를 영어로 변환
+   * 이미지 파일 경로 및 파일명이 영어로 되어 있어서 필요함
+   */
   function getEnglishTheme(theme) {
     switch (theme) {
       case "액티비티":
@@ -173,7 +178,6 @@
     if (regions.length < 2) {
       if (currentRound === 1) {
         regionKr = getKoreanRegion(regions[0]);
-        alert(`🏆 우승! ${regionKr} 🎉`);
         winner(regionKr);
         return;
       } else {
@@ -353,6 +357,9 @@
    * 월드컵 게임을 시작합니다.
    */
   function startWorldCup() {
+    document.getElementById(
+      "worldcup-title"
+    ).textContent = `지금 가고 싶은 ${theme} 여행 장소는?`;
     setFirstRound();
     displayNextPair();
   }
