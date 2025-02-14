@@ -26,7 +26,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
     />
-
     <link rel="stylesheet" href="../css/global.css" />
     <link rel="stylesheet" href="../css/schedule.css" />
   </head>
@@ -229,66 +228,10 @@
           <div class="col-12">
             <h2 class="text-center mb-4">여행 후기</h2>
             <!-- 후기 목록 (스크롤) -->
-            <div class="row review-scroll-area mb-4" data-aos="fade-up">
-              <!-- 후기 카드 예시 1 -->
-              <div class="col-12 mb-3">
-                <div class="card card-comment-padding">
-                  <div class="row g-0">
-                    <div class="col-md-3 card-img-size">
-                      <img
-                        src="../assets/logo.png"
-                        class="img-fluid rounded-circle"
-                        alt="썸네일"
-                      />
-                    </div>
-                    <div class="col-md-10">
-                      <div class="card-body">
-                        <div class="review-item-title">
-                          해운대 해수욕장 너무 좋아요
-                        </div>
-                        <!-- 자세히 보기 버튼: collapse를 토글하고 버튼은 숨김 -->
-                        <button
-                          id="showDetailButton"
-                          class="btn btn-sm btn-outline-secondary"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapseDetail1"
-                          aria-expanded="false"
-                          aria-controls="collapseDetail1"
-                          onclick="this.style.display='none';"
-                        >
-                          자세히 보기
-                        </button>
-                        <!-- 상세 후기가 들어있는 collapse 영역 -->
-                        <div
-                          class="collapse collapse-content"
-                          id="collapseDetail1"
-                        >
-                          <p>
-                            친구들과 함께 한 부산 여행이었는데, 해운대의
-                            분위기가 너무 좋아서 계속 머물고 싶었어요. 밤에 보는
-                            해변도 아름다웠고, 주변 카페와 음식점이 많아
-                            편리했답니다.
-                          </p>
-                          <!-- 카드 접기 버튼: collapse를 토글하고 자세히 보기 버튼을 다시 보이게 함 -->
-                          <button
-                            class="btn btn-sm btn-outline-secondary mt-2"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseDetail1"
-                            aria-expanded="true"
-                            aria-controls="collapseDetail1"
-                            onclick="document.getElementById('showDetailButton').style.display='block';"
-                          >
-                            카드 접기
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+            <div
+              class="row review-scroll-area mb-4 review-cards"
+              data-aos="fade-up"
+            >
               <!-- 추가 여행 후기 카드 작성 가능 -->
             </div>
             <!-- 후기 작성 폼 -->
@@ -334,6 +277,7 @@
                     글 업로드
                   </button>
                 </form>
+                <div id="uploadMessage"></div>
               </div>
             </div>
           </div>
@@ -343,7 +287,7 @@
     <!-- Toast 메시지 (복사되었습니다.) -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div
-        id="copyToast"
+        id="toastControl"
         class="toast align-items-center"
         role="alert"
         aria-live="assertive"
@@ -365,7 +309,8 @@
     <!-- AOS JS (body 태그 닫기 전에 추가) -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/schedule.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/schedule.js"></script>
     <script>
       AOS.init({
         duration: 800, // 애니메이션 지속 시간 (밀리초)
