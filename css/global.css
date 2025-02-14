@@ -39,7 +39,8 @@ body {
 
 /* 로고 이미지 스타일 */
 .logo {
-  width: 50px; /* 로고 크기 */
+  margin-top: 5px;
+  width: 140px; /* 로고 크기 */
   height: auto;
 }
 
