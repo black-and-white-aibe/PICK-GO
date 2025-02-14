@@ -36,6 +36,7 @@ function extractVideoId(youtubeLink) {
     : url.searchParams.get("v");
 }
 
+// 유튜브 플레이어 생성 후 링크 연결
 async function newYoutubePlayer(index) {
   const carouselContainer = document.querySelector(".carousel-container");
 
@@ -84,6 +85,7 @@ async function newYoutubePlayer(index) {
   });
 }
 
+// 유튜브 플레이어를 링크 수만큼 생성하는 함수
 async function appendYoutubeVlog() {
   for (let i = 0; i < totalPlayers; i++) {
     await newYoutubePlayer(i);
@@ -111,6 +113,7 @@ function onPlayerStateChange(event) {
   }
 }
 
+// 전체 유튜브 플레이어 정지
 function stopYoutubePlayer() {
   players.forEach((player) => {
     player.stopVideo();
