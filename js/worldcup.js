@@ -1,21 +1,136 @@
 (() => {
-  let items = [];
-  let players = [];
-  let playersReadyCount = 0;
+  let roundNum = 8; //확장 가능성 - 16강, 32강 등
+  let regions = [];
   let currentPair = [];
-  let currentRound = 0;
-  let currentItemCount = 1;
-  let itemsLoaded = false;
-  let playersReady = false;
+  let currentRound = roundNum;
+  let currentRegionCount = 1;
+
+  // 현재 선택된 테마 (임시 지정, URL 파라미터에서 가져오는 방식 가능)
+  const urlParams = new URLSearchParams(window.location.search);
+  const theme = urlParams.get("theme");
+  let themeEn = getEnglishTheme(theme);
+
+  /**
+   * 지역명을 한글로 변환
+   */
+  function getKoreanRegion(region) {
+    switch (region) {
+      case "andong":
+        return "안동";
+      case "boryeong":
+        return "보령";
+      case "buan":
+        return "부안";
+      case "busan":
+        return "부산";
+      case "chuncheon":
+        return "춘천";
+      case "daegu":
+        return "대구";
+      case "daejeon":
+        return "대전";
+      case "damyang":
+        return "담양";
+      case "danyang":
+        return "단양";
+      case "gangnueng":
+        return "강릉";
+      case "gapyeong":
+        return "가평";
+      case "geoje":
+        return "거제";
+      case "goheung":
+        return "고흥";
+      case "goisan":
+        return "괴산";
+      case "gongju":
+        return "공주";
+      case "gunsan":
+        return "군산";
+      case "gwangju":
+        return "광주";
+      case "gyeongju":
+        return "경주";
+      case "incheon":
+        return "인천";
+      case "inje":
+        return "인제";
+      case "jeju":
+        return "제주";
+      case "jeonju":
+        return "전주";
+      case "jiri":
+        return "지리산";
+      case "mokpo":
+        return "목포";
+      case "mungyeong":
+        return "문경";
+      case "naju":
+        return "나주";
+      case "pyeongchang":
+        return "평창";
+      case "seongnam":
+        return "성남";
+      case "seoul":
+        return "서울";
+      case "sokcho":
+        return "속초";
+      case "suncheon":
+        return "순천";
+      case "suwon":
+        return "수원";
+      case "taean":
+        return "태안";
+      case "taebaek":
+        return "태백";
+      case "uljin":
+        return "울진";
+      case "ulsan":
+        return "울산";
+      case "yangpyeong":
+        return "양평";
+      case "yangyang":
+        return "양양";
+      case "yeosu":
+        return "여수";
+      case "yongin":
+        return "용인";
+      default:
+        return region;
+    }
+  }
+
+  function getEnglishTheme(theme) {
+    switch (theme) {
+      case "액티비티":
+        return "activity";
+      case "도심":
+        return "city";
+      case "연인":
+        return "couple";
+      case "가족":
+        return "family";
+      case "전통":
+        return "tradition";
+      case "힐링":
+        return "healing";
+      case "산":
+        return "mountain";
+      case "바다":
+        return "sea";
+      case "맛집":
+        return "food";
+      default:
+        return "food";
+    }
+  }
 
   /**
    * 첫 라운드를 설정합니다.
-   * 현재 라운드를 설정하고, 현재 아이템 카운트를 1로 초기화합니다.
-   * @param {array} array - 라운드 배열.
    */
-  function setFirstRound(array) {
-    currentRound = array.length;
-    currentItemCount = 1;
+  function setFirstRound() {
+    currentRound = 8;
+    currentRegionCount = 1;
   }
 
   /**
@@ -29,7 +144,6 @@
 
   /**
    * 현재 라운드 정보를 화면에 표시합니다.
-   * 현재 라운드가 1이면 "우승!", 2이면 "결승", 그 외에는 "[라운드]강([현재 아이템 번호]/[전체 아이템 수])" 형식으로 표시합니다.
    */
   function updateRoundInfo() {
     let text =
@@ -37,60 +151,52 @@
         ? "우승!"
         : currentRound === 2
         ? "결승"
-        : `${currentRound}강(${currentItemCount++}/${currentRound * 0.5})`;
+        : `${currentRound}강(${currentRegionCount++}/${currentRound / 2})`;
     document.getElementById("round-info").textContent = text;
   }
 
   /**
-   * 우승 시 페이지를 새로고침합니다.
+   * 우승 시 결과 페이지로 이동합니다.
    */
-  function winner(item) {
-    const baseUrl = window.location.origin + "/pickme_cup";
-    location.href = `${baseUrl}/resources/templates/winner.html?title=${item.title}&youtubeLink=${item.youtubeLink}`;
+  function winner(region) {
+    //실제 배포 시 아래 링크로 수정 필요
+    // const baseUrl = window.location.origin + "/PICK-GO";
+    // location.href = `${baseUrl}/pages/schedule.html?theme=${theme}&region=${region}`;
+    location.href = `./schedule.html?theme=${theme}&region=${region}`;
   }
 
   /**
    * 다음 대결 쌍을 화면에 표시합니다.
-   * 대결할 두 아이템을 선택하고, 각 아이템에 해당하는 YouTube 비디오를 로드합니다.
-   * 라운드가 끝났는지 확인하고, 끝났으면 다음 라운드를 설정하거나 최종 우승자를 표시합니다.
    */
   function displayNextPair() {
-    if (items.length < 2) {
+    let regionKr = "";
+    if (regions.length < 2) {
       if (currentRound === 1) {
-        alert(`🏆 우승! ${items[0].title} 🎉`);
-        winner(items[0]);
+        regionKr = getKoreanRegion(regions[0]);
+        alert(`🏆 우승! ${regionKr} 🎉`);
+        winner(regionKr);
         return;
       } else {
-        items = shuffleArray(items);
-        currentRound >>= 1;
+        regions = shuffleArray(regions);
+        currentRound /= 2;
       }
     }
 
-    currentPair = items.splice(0, 2);
+    currentPair = regions.splice(0, 2);
     for (let i = 0; i < 2; i++) {
-      const videoId = extractVideoId(currentPair[i].youtubeLink);
-      if (players[i]) {
-        players[i].cueVideoById(videoId);
-      } else {
-        console.error(`플레이어 ${i}가 아직 준비되지 않았습니다.`);
-      }
-      document.getElementById(`item-title-${i}`).textContent =
-        currentPair[i].title;
+      regionKr = getKoreanRegion(currentPair[i]);
+      document.getElementById(`region-title-${i}`).textContent = regionKr;
+      document.getElementById(
+        `region-img-${i}`
+      ).src = `../assets/region/${themeEn}/${currentPair[i]}-${themeEn}.png`;
     }
     updateRoundInfo();
   }
 
   /**
    * 아이템을 선택했을 때의 동작을 처리합니다.
-   * 선택되지 않은 다른 아이템의 비디오를 정지시키고, 선택된 아이템과 선택되지 않은 아이템에 CSS 클래스를 추가하여 시각적 효과를 줍니다.
-   * 2초 후에 선택된 아이템을 다음 라운드에 진출시키고, 다음 대결 쌍을 표시합니다.
-   * @param {number} index - 선택된 아이템의 인덱스 (0 또는 1).
    */
-  function selectItem(index) {
-    players.forEach((player, i) => {
-      if (i !== index) player.stopVideo();
-    });
-
+  function selectRegion(index) {
     const cardContainer = document.querySelector(".card-container");
     cardContainer.style.pointerEvents = "none";
 
@@ -99,11 +205,11 @@
     cards[1 - index].classList.add("unselected");
 
     setTimeout(() => {
-      items.push(currentPair[index]);
-      if (items.length === currentRound / 2) {
-        currentRound >>= 1;
-        currentItemCount = 1;
-        items = shuffleArray(items);
+      regions.push(currentPair[index]);
+      if (regions.length === currentRound / 2) {
+        currentRound /= 2;
+        currentRegionCount = 1;
+        regions = shuffleArray(regions);
       }
 
       cards[index].classList.remove("selected");
@@ -114,129 +220,145 @@
   }
 
   /**
-   * 'link_list.txt' 파일에서 아이템 목록을 읽어옵니다.
-   * 파일을 읽어온 후, 파싱하고 섞어서 게임을 시작할 준비를 합니다.
-   * 오류 발생 시 콘솔에 오류 메시지를 출력합니다.
+   * 테마별 8개 지역을 로드합니다.
+   * 데이터가 너무 많아요 ㅠㅠ
+   * 나중에 반드시 DB로 하겠습니다.
    */
-  async function readItems() {
-    console.log("txt 파일 로드 준비");
-    try {
-      const response = await fetch("link_list.txt");
-      const data = await response.text();
-      const _Items = parseItems(data);
-      items = shuffleArray(_Items);
-      itemsLoaded = true;
-      console.log("txt 파일 로드 완료");
-      tryStartWorldCup();
-    } catch (error) {
-      console.error("파일 로딩 중 오류 발생:", error);
+  function loadRegions() {
+    switch (themeEn) {
+      case "activity":
+        regions = shuffleArray([
+          "busan",
+          "chuncheon",
+          "danyang",
+          "gapyeong",
+          "jeju",
+          "mungyeong",
+          "pyeongchang",
+          "yeosu",
+        ]);
+        break;
+      case "city":
+        regions = shuffleArray([
+          "busan",
+          "daegu",
+          "daejeon",
+          "gwangju",
+          "incheon",
+          "jeju",
+          "seongnam",
+          "seoul",
+        ]);
+        break;
+      case "couple":
+        regions = shuffleArray([
+          "busan",
+          "gapyeong",
+          "gongju",
+          "gunsan",
+          "jeju",
+          "seoul",
+          "yangyang",
+          "yeosu",
+        ]);
+        break;
+      case "family":
+        regions = shuffleArray([
+          "busan",
+          "daegu",
+          "jeju",
+          "pyeongchang",
+          "seoul",
+          "suncheon",
+          "taean",
+          "yongin",
+        ]);
+        break;
+      case "tradition":
+        regions = shuffleArray([
+          "andong",
+          "gangnueng",
+          "gongju",
+          "gyeongju",
+          "jeju",
+          "jeonju",
+          "naju",
+          "seoul",
+        ]);
+        break;
+      case "healing":
+        regions = shuffleArray([
+          "buan",
+          "damyang",
+          "goheung",
+          "inje",
+          "jeju",
+          "taean",
+          "uljin",
+          "yangpyeong",
+        ]);
+        break;
+      case "mountain":
+        regions = shuffleArray([
+          "goisan",
+          "gapyeong",
+          "inje",
+          "jeju",
+          "buan",
+          "jiri",
+          "mungyeong",
+          "taebaek",
+        ]);
+        break;
+      case "sea":
+        regions = shuffleArray([
+          "boryeong",
+          "busan",
+          "geoje",
+          "incheon",
+          "jeju",
+          "sokcho",
+          "ulsan",
+          "yeosu",
+        ]);
+        break;
+      case "food":
+        regions = shuffleArray([
+          "andong",
+          "busan",
+          "daegu",
+          "jeju",
+          "jeonju",
+          "mokpo",
+          "sokcho",
+          "suwon",
+        ]);
+        break;
+      default:
+        regions = shuffleArray([
+          "default1",
+          "default2",
+          "default3",
+          "default4",
+          "default5",
+          "default6",
+          "default7",
+          "default8",
+        ]);
     }
-  }
-
-  /**
-   * 텍스트 데이터를 파싱하여 아이템 객체 배열로 변환합니다.
-   * 각 줄을 쉼표로 분리하여 제목과 YouTube 링크를 추출하고, 각 아이템을 객체로 만들어 배열에 추가합니다.
-   * @param {string} data - 파싱할 텍스트 데이터.
-   * @returns {array} - 아이템 객체 배열.
-   */
-  function parseItems(data) {
-    return data
-      .trim()
-      .split("\n")
-      .map((line) => {
-        const [title, youtubeLink] = line
-          .split(",")
-          .map((item) => item.replace(/"/g, "").trim());
-        return { title, youtubeLink };
-      });
+    startWorldCup();
   }
 
   /**
    * 월드컵 게임을 시작합니다.
-   * 첫 라운드를 설정하고, 다음 대결 쌍을 표시합니다.
    */
   function startWorldCup() {
-    setFirstRound(items);
+    setFirstRound();
     displayNextPair();
   }
 
   /**
-   * 월드컵 게임 시작을 시도합니다.
-   * 아이템 로드와 플레이어 준비가 모두 완료되면 게임을 시작합니다.
-   */
-  function tryStartWorldCup() {
-    console.log("월드컵 시작 시도");
-    if (itemsLoaded && playersReady) {
-      console.log("월드컵 시작 성공");
-      startWorldCup();
-    } else {
-      console.log("월드컵 시작 실패");
-    }
-  }
-
-  /**
-   * YouTube 링크에서 비디오 ID를 추출합니다.
-   * '/embed/' 경로 또는 'v' 쿼리 파라미터를 사용하여 비디오 ID를 찾습니다.
-   * @param {string} youtubeLink - YouTube 링크.
-   * @returns {string} - 비디오 ID.
-   */
-  function extractVideoId(youtubeLink) {
-    const url = new URL(youtubeLink);
-    return url.pathname.startsWith("/embed/")
-      ? url.pathname.split("/embed/")[1]
-      : url.searchParams.get("v");
-  }
-
-  /**
-   * YouTube Iframe API가 준비되면 호출됩니다.
-   * 각 YouTube 플레이어 iframe에 대해 YT.Player 객체를 생성하고, 이벤트 핸들러를 설정합니다.
-   */
-  function onYouTubeIframeAPIReady() {
-    const iframeElements = document.querySelectorAll(".youtube-player");
-    iframeElements.forEach((iframe, index) => {
-      players.push(
-        new YT.Player(iframe, {
-          events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange,
-          },
-        })
-      );
-    });
-  }
-
-  /**
-   * 플레이어가 준비될 때마다 호출됩니다.
-   * 플레이어 준비 카운트를 증가시키고, 모든 플레이어가 준비되면 게임 시작을 시도합니다.
-   * @param {object} event - 플레이어 이벤트 객체.
-   */
-  function onPlayerReady(event) {
-    event.target.pauseVideo();
-    playersReadyCount += 1;
-    console.log("준비 완료된 플레이어 수: ", playersReadyCount);
-    if (playersReadyCount === 2) {
-      console.log("모든 플레이어 준비 완료");
-      playersReady = true;
-      readItems();
-    }
-  }
-
-  /**
-   * 플레이어 상태가 변경될 때마다 호출됩니다.
-   * 한 플레이어가 재생 중이면 다른 플레이어는 일시 중지시킵니다.
-   * @param {object} event - 플레이어 이벤트 객체.
-   */
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.PLAYING) {
-      players.forEach((player) => {
-        if (player !== event.target) player.pauseVideo();
-      });
-    }
-  }
-
-  /**
    * 웹 페이지가 로드되면 호출됩니다.
-   * 각 카드에 클릭 이벤트 리스너를 추가하고, YouTube Iframe API를 초기화합니다.
    */
   window.onload = () => {
     console.log("웹 페이지 로드 완료");
@@ -244,10 +366,10 @@
     for (let i = 0; i < 2; i++) {
       const cards = document.querySelectorAll(".card");
       cards[i].addEventListener("click", () => {
-        selectItem(i);
+        selectRegion(i);
       });
     }
 
-    onYouTubeIframeAPIReady();
+    loadRegions();
   };
 })();
