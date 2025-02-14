@@ -81,23 +81,21 @@
             <div
               id="vlogCarousel"
               class="carousel slide carousel-vlog"
-              data-bs-ride="carousel"
+              data-bs-ride="false"
               data-bs-interval="false"
             >
-              <div class="carousel-inner">
-                <!-- 슬라이드 1 -->
-                <div class="carousel-item active">
-                  <iframe
-                    src="https://www.youtube.com/embed/SZc_JAPevIQ?si=BW5Rs7Y_9cw1XQXO"
-                    frameborder="0"
-                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                    style="width: 100%; height: 100%"
-                  ></iframe>
+              <!-- 로딩 스피너 -->
+              <div id="spinner" class="carousel-spinner">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
                 </div>
-
-                <!-- 추가 슬라이드 작성 가능 -->
               </div>
+
+              <!-- carousel 아이템 컨테이너 -->
+              <div class="carousel-inner carousel-container">
+                <!-- 동적으로 플레이어 슬라이드가 추가됩니다. -->
+              </div>
+
               <!-- 이전/다음 버튼 -->
               <button
                 class="carousel-control-prev carousel-control-margin"
@@ -284,7 +282,7 @@
         </div>
       </div>
     </div>
-    <!-- Toast 메시지 (복사되었습니다.) -->
+    <!-- Toast 메시지 -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div
         id="toastControl"
@@ -294,7 +292,7 @@
         aria-atomic="true"
       >
         <div class="d-flex">
-          <div class="toast-body">복사되었습니다.</div>
+          <div class="toast-body"></div>
           <button
             type="button"
             class="btn-close me-2 m-auto"
@@ -310,14 +308,18 @@
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="../js/schedule.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- 수정된 schedule.js -->
+    <script src="../js/schedule.js"></script>
+    <script type="module" src="../js/schedule-review.js"></script>
     <script>
       AOS.init({
         duration: 800, // 애니메이션 지속 시간 (밀리초)
         easing: "ease-in-out", // 이징 효과
-        once: false, // 스크롤 시마다 애니메이션 실행 (false일 경우 요소가 뷰포트에 들어올 때마다 애니메이션 실행)
-        mirror: true, // 요소가 뷰포트를 벗어나면 (위로 스크롤 등) 반대 애니메이션 실행
+        once: false, // 스크롤 시마다 애니메이션 실행
+        mirror: true, // 요소가 뷰포트에서 벗어나면 반대 애니메이션 실행
       });
     </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
   </body>
 </html>
