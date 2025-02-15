@@ -94,12 +94,14 @@ async function appendYoutubeVlog() {
 
 async function onYouTubeIframeAPIReady() {
   console.log("유튜브 API 준비 완료");
+
+  // 브이로그 로딩 필요하면 아래 주석 해제하기:)
   // 유튜브 영상 링크 요청
   // await requestVlogList(theme, region);
   // 유튜브 영상 플레이어 추가
-  appendYoutubeVlog();
+  // appendYoutubeVlog();
   // 모든 플레이어가 준비되면 스피너 제거
-  document.getElementById("spinner").remove();
+  // document.getElementById("spinner").remove();
 }
 
 /**
