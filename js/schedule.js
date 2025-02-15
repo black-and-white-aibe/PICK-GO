@@ -98,10 +98,15 @@ async function onYouTubeIframeAPIReady() {
   // 브이로그 로딩 필요하면 아래 주석 해제하기:)
   // // 유튜브 영상 링크 요청
   // await requestVlogList(theme, region);
-  // // 유튜브 영상 플레이어 추가
-  // appendYoutubeVlog();
-  // // 모든 플레이어가 준비되면 스피너 제거
-  // document.getElementById("spinner").remove();
+  // 유튜브 영상 플레이어 추가
+  appendYoutubeVlog();
+  // 모든 플레이어가 준비되면 스피너 제거
+  document.getElementById("spinner").remove();
+
+  // 유튜브 iframe 영역 꽉 채우게 수정
+  const carouselInner = document.querySelector(".carousel-inner"); // 요소 선택
+  carouselInner.style.justifyContent = "start";
+  carouselInner.style.alignItems = "start";
 }
 
 /**
