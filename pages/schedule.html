@@ -84,16 +84,25 @@
               data-bs-ride="false"
               data-bs-interval="false"
             >
-              <!-- 로딩 스피너 -->
-              <div id="spinner" class="carousel-spinner">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-
               <!-- carousel 아이템 컨테이너 -->
               <div class="carousel-inner carousel-container">
                 <!-- 동적으로 플레이어 슬라이드가 추가됩니다. -->
+                <div id="spinner" class="carousel-spinner">
+                  <div
+                    class="spinner-border"
+                    style="color: #000000"
+                    role="status"
+                  ></div>
+                  <p
+                    style="
+                      /* margin-top: 10px; */
+                      font-weight: bold;
+                      color: #000000;
+                    "
+                  >
+                    브이로그 검색 중...
+                  </p>
+                </div>
               </div>
 
               <!-- 이전/다음 버튼 -->
