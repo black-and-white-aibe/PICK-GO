@@ -12,6 +12,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const theme = urlParams.get("theme");
 const region = urlParams.get("region");
 
+let reviewCardCount = 0; // 카드 id 식별용 변수
+
 const createReviewCard = function (reviewTitle, reviewContent, reviewImg) {
   // review-cards 컨테이너 선택
   const reviewCardsContainer = document.querySelector(".review-cards");
@@ -60,7 +62,7 @@ const createReviewCard = function (reviewTitle, reviewContent, reviewImg) {
   // 숨김 내용에 해당하는 div
   const collapseDiv = document.createElement("div");
   collapseDiv.classList.add("collapse");
-  collapseDiv.id = `collapse-${reviewTitle.replace(/\s+/g, "-")}`;
+  collapseDiv.id = `collapse-${reviewCardCount}`; // 고유 ID적용
   cardBody.appendChild(collapseDiv);
 
   // 리뷰 내용 생성
@@ -113,10 +115,12 @@ const createReviewCard = function (reviewTitle, reviewContent, reviewImg) {
   collapseDiv.appendChild(collapseButton);
 
   // 최종적으로 reviewCardsContainer에 카드 추가
-  reviewCardsContainer.appendChild(cardContainer);
+  reviewCardsContainer.prepend(cardContainer);
+  reviewCardCount += 1;
 };
 
 async function fetchReviews(theme, region) {
+  reviewCardCount = 0;
   const { data, error } = await supabase
     .from("Review") // 'Review' 테이블에서
     .select("*") // 모든 데이터 가져오기
@@ -127,6 +131,9 @@ async function fetchReviews(theme, region) {
     console.error("데이터 가져오기 실패:", error.message);
     return;
   }
+
+  const reviewCardsContainer = document.querySelector(".review-cards");
+  reviewCardsContainer.innerHTML = "";
 
   data.forEach((review) => {
     createReviewCard(review.title, review.content, review.img);
