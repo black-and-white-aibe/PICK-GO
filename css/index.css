@@ -19,7 +19,6 @@ body {
 /* 텍스트 영역 스타일 */
 .contents-text {
   text-align: left;
-  padding: 20px;
 }
 
 .contents-title {

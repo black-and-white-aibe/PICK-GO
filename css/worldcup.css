@@ -87,3 +87,7 @@
 .unselected {
   animation: fadeOut 0.5s ease-in-out forwards;
 }
+
+.screen-container {
+  padding: auto;
+}
