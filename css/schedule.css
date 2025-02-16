@@ -85,6 +85,54 @@ body {
   border: 1px solid #ccc;
 }
 
+.timeline-container {
+  position: relative;
+  width: 100%;
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  opacity: 0.4;
+  transform: scale(0.95);
+  transition: all 0.3s ease-out;
+}
+
+.timeline-item.focus {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.timeline-item.semi-focus {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+
+.vertical-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background-color: black;
+}
+
+.circle {
+  position: absolute;
+  top: 10px;
+  width: 18px;
+  height: 18px;
+  background-color: black;
+  border-radius: 50%;
+  transition: transform 0.3s ease-out;
+}
+
+.timeline-item.focus .circle {
+  transform: scale(1.2);
+}
+
 /* ========== 일정 항목 스타일 ========== */
 .schedule-item {
   display: flex;

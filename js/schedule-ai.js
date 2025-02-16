@@ -67,10 +67,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function renderSchedule(scheduleData) {
-    // 기존 내용 제거
+    const scheduleContainer = document.querySelector(
+      ".ai-schedule-scroll-area"
+    );
     scheduleContainer.innerHTML = "";
 
-    // 일정 데이터가 없을 경우 처리
     if (!scheduleData || scheduleData.length === 0) {
       scheduleContainer.innerHTML = "<p>일정이 없습니다.</p>";
       return;
@@ -78,19 +79,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 전체 타임라인을 감싸는 컨테이너
     const timelineContainer = document.createElement("div");
-    timelineContainer.style.position = "relative";
-    timelineContainer.style.width = "100%";
-    timelineContainer.style.padding = "20px 0";
+    timelineContainer.classList.add("timeline-container");
 
     // 중앙 세로 라인
     const verticalLine = document.createElement("div");
-    verticalLine.style.position = "absolute";
-    verticalLine.style.left = "50%";
-    verticalLine.style.top = "0";
-    verticalLine.style.width = "2px";
-    verticalLine.style.height = "100%";
-    verticalLine.style.backgroundColor = "black";
-
+    verticalLine.classList.add("vertical-line");
     timelineContainer.appendChild(verticalLine);
 
     // 각 Day(일자)마다 타임라인의 노드(점)와 내용 카드 생성
@@ -99,13 +92,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // 날짜별 컨테이너
       const dayWrapper = document.createElement("div");
-      dayWrapper.classList.add("timeline-item"); // 애니메이션 적용
-      dayWrapper.style.position = "relative";
-      dayWrapper.style.width = "50%";
-      dayWrapper.style.padding = "10px 20px";
-      dayWrapper.style.boxSizing = "border-box";
-      dayWrapper.style.opacity = "0"; // 초기 상태
-      dayWrapper.style.transform = "translateY(20px)"; // 초기 애니메이션 상태
+      dayWrapper.classList.add("timeline-item");
 
       if (side === "left") {
         dayWrapper.style.left = "0";
@@ -115,14 +102,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // 타임라인 점(원)
       const circle = document.createElement("div");
-      circle.classList.add("circle"); // 원 애니메이션 적용
-      circle.style.position = "absolute";
-      circle.style.top = "10px";
-      circle.style.width = "18px";
-      circle.style.height = "18px";
-      circle.style.backgroundColor = "black";
-      circle.style.borderRadius = "50%";
-      circle.style.transform = "scale(0)"; // 초기 상태
+      circle.classList.add("circle");
 
       if (side === "left") {
         circle.style.right = "-9px";
@@ -146,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             : "";
           return `
             <p>
-              <strong>${item.time} - ${item.activity} (${item.destination})</strong>
+              <strong><small>${item.time} - ${item.activity} (${item.destination})</small></strong>
               <br><small>${item.description}</small>
               ${addressText}
             </p>
@@ -167,47 +147,66 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     scheduleContainer.appendChild(timelineContainer);
 
+    // 스크롤 이벤트에 따른 포커스 효과
+    function updateFocus() {
+      const timelineItems =
+        scheduleContainer.querySelectorAll(".timeline-item");
+      const containerRect = scheduleContainer.getBoundingClientRect();
+      const containerCenter = containerRect.top + containerRect.height / 2;
+
+      timelineItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.top + rect.height / 2;
+        const distanceFromCenter = Math.abs(containerCenter - itemCenter);
+
+        // 중앙에서의 거리에 따라 클래스 적용
+        console.log(distanceFromCenter);
+        if (distanceFromCenter < 300) {
+          item.classList.add("focus");
+          item.classList.remove("semi-focus");
+        } else if (distanceFromCenter < 450) {
+          item.classList.add("semi-focus");
+          item.classList.remove("focus");
+        } else {
+          item.classList.remove("focus", "semi-focus");
+        }
+      });
+    }
+
+    // 스크롤 영역에 대한 이벤트 리스너 등록
+    scheduleContainer.addEventListener("scroll", updateFocus);
+    // 초기 포커스 상태 설정
+    updateFocus();
+
     // 일정 복사 버튼 이벤트 등록
     const copyButton = document.querySelector(".ai-schedule-copy-button");
-    copyButton.addEventListener("click", () =>
-      copyScheduleToClipboard(scheduleData)
-    );
+    if (copyButton) {
+      copyButton.addEventListener("click", () =>
+        copyScheduleToClipboard(scheduleData)
+      );
+    }
 
-    // 🔹 버튼 클릭 시 스타일 변경 (복사 효과 강조)
-    document.querySelectorAll(".copy-address-btn").forEach((btn) => {
+    // 주소 복사 버튼 이벤트
+    scheduleContainer.querySelectorAll(".copy-address-btn").forEach((btn) => {
       btn.addEventListener("click", function () {
         copyAddressToClipboard(this.dataset.address);
-        // 🔹 복사 완료 스타일 변경
-        this.innerHTML = "✅"; // 텍스트 변경
-        // 2초 후 원래 상태로 복귀
+        this.innerHTML = "✅";
         setTimeout(() => {
           this.innerHTML = "📋";
         }, 2000);
       });
-      // 🔹 호버 효과 추가
       btn.addEventListener("mouseover", function () {
-        this.style.backgroundColor = "#e2e6ea"; // 연한 회색
+        this.style.backgroundColor = "#e2e6ea";
       });
       btn.addEventListener("mouseout", function () {
-        this.style.backgroundColor = "#f8f9fa"; // 원래 색상 복귀
+        this.style.backgroundColor = "#f8f9fa";
       });
     });
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
-            entry.target.querySelector(".circle").style.transform = "scale(1)";
-            observer.unobserve(entry.target); // 한 번 등장하면 다시 감지 안 함
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    document
-      .querySelectorAll(".timeline-item")
-      .forEach((item) => observer.observe(item));
+
+    // 컴포넌트가 제거될 때 스크롤 이벤트 리스너 제거
+    return () => {
+      scheduleContainer.removeEventListener("scroll", updateFocus);
+    };
   }
 
   const scheduleData = await fetchSchedule();
