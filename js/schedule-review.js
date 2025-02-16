@@ -190,8 +190,18 @@ document.addEventListener("DOMContentLoaded", () => {
 // 폼 제출 이벤트 리스너
 document.querySelector(".review").addEventListener("submit", async (event) => {
   event.preventDefault(); // 기본 제출 동작 방지
-  const title = document.getElementById("reviewTitle").value;
-  const content = document.getElementById("reviewContent").value;
+  const titleInput = document.getElementById("reviewTitle");
+  const contentInput = document.getElementById("reviewContent");
+  const fileInput = document.getElementById("reviewImage");
+
+  const title = titleInput.value;
+  const content = contentInput.value;
+
   await uploadReview(theme, region, title, content);
   await fetchReviews(theme, region);
+
+  // 입력 필드 초기화
+  titleInput.value = ""; // 제목
+  contentInput.value = ""; // 내용
+  fileInput.value = ""; // 파일
 });
