@@ -138,12 +138,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         .map((item) => {
           const addressText = item.address
             ? `<br><small>주소: ${item.address}</small><button class="copy-address-btn" data-address="${item.address}" 
-                       style="margin-left: 5px; padding: 2px 6px; font-size: 12px; cursor: pointer;">
+                       style="margin-left: 5px; padding: 2px 6px; font-size: 10px; cursor: pointer;border-radius: 5px; border: 1px solid #ddd;
+                 background-color: #f8f9fa; transition: background-color 0.3s;">
                        📋</button>`
             : "";
           return `
             <p>
-              <strong><small>${item.time} - ${item.activity} (${item.destination})</small></strong>
+              <strong>${item.time} - ${item.activity} (${item.destination})</strong>
               <br><small>${item.description}</small>
               ${addressText}
             </p>
@@ -173,10 +174,27 @@ document.addEventListener("DOMContentLoaded", async function () {
       copyScheduleToClipboard(scheduleData)
     );
 
-    // 주소 복사 버튼 이벤트 등록
+    // 🔹 버튼 클릭 시 스타일 변경 (복사 효과 강조)
     document.querySelectorAll(".copy-address-btn").forEach((btn) => {
       btn.addEventListener("click", function () {
         copyAddressToClipboard(this.dataset.address);
+
+        // 🔹 복사 완료 스타일 변경
+        this.innerHTML = "✅"; // 텍스트 변경
+
+        // 2초 후 원래 상태로 복귀
+        setTimeout(() => {
+          this.innerHTML = "📋";
+        }, 2000);
+      });
+
+      // 🔹 호버 효과 추가
+      btn.addEventListener("mouseover", function () {
+        this.style.backgroundColor = "#e2e6ea"; // 연한 회색
+      });
+
+      btn.addEventListener("mouseout", function () {
+        this.style.backgroundColor = "#f8f9fa"; // 원래 색상 복귀
       });
     });
   }
