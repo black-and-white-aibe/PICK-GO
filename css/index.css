@@ -38,7 +38,7 @@
 #mainCarousel .carousel-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
   object-position: center;
   display: block;
   max-width: 100%;
@@ -49,10 +49,6 @@
 #mainCarousel .carousel-inner,
 #mainCarousel .carousel-item {
   height: 100%;
-}
-
-#mainCarousel .carousel-item img {
-  object-fit: cover;
 }
 
 /* 캐러셀 아이콘 밝은 회색으로 변경 */
