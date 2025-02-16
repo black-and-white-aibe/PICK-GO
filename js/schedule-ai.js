@@ -60,6 +60,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         '<img src="../assets/icon/copy-icon.png" alt="" />';
     }, 2000);
   }
+  function copyAddressToClipboard(address) {
+    navigator.clipboard.writeText(address).catch((err) => {
+      console.error("주소 복사 실패:", err);
+    });
+  }
 
   function renderSchedule(scheduleData) {
     // 기존 내용 제거
@@ -132,11 +137,13 @@ document.addEventListener("DOMContentLoaded", async function () {
       const scheduleItemsHTML = daySchedule.schedule
         .map((item) => {
           const addressText = item.address
-            ? `<br><small>주소: ${item.address}</small>`
+            ? `<br><small>주소: ${item.address}</small><button class="copy-address-btn" data-address="${item.address}" 
+                       style="margin-left: 5px; padding: 2px 6px; font-size: 12px; cursor: pointer;">
+                       📋</button>`
             : "";
           return `
             <p>
-              <strong>${item.time} - ${item.activity} (${item.destination})</strong>
+              <strong><small>${item.time} - ${item.activity} (${item.destination})</small></strong>
               <br><small>${item.description}</small>
               ${addressText}
             </p>
@@ -160,11 +167,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 최종적으로 scheduleContainer에 타임라인 전체를 추가
     scheduleContainer.appendChild(timelineContainer);
 
-    // 복사 버튼 이벤트 등록
+    // 일정 복사 버튼 이벤트 등록
     const copyButton = document.querySelector(".ai-schedule-copy-button");
     copyButton.addEventListener("click", () =>
       copyScheduleToClipboard(scheduleData)
     );
+
+    // 주소 복사 버튼 이벤트 등록
+    document.querySelectorAll(".copy-address-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        copyAddressToClipboard(this.dataset.address);
+      });
+    });
   }
 
   const scheduleData = await fetchSchedule();
