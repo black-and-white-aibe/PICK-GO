@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const distanceFromCenter = Math.abs(containerCenter - itemCenter);
 
         // 중앙에서의 거리에 따라 클래스 적용
-        console.log(distanceFromCenter);
+        // console.log(distanceFromCenter);
         if (distanceFromCenter < 300) {
           item.classList.add("focus");
           item.classList.remove("semi-focus");
