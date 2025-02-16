@@ -97,7 +97,7 @@ async function onYouTubeIframeAPIReady() {
 
   // 브이로그 로딩 필요하면 아래 주석 해제하기:)
   // 유튜브 영상 링크 요청
-  // await requestVlogList(theme, region);
+  await requestVlogList(theme, region);
   // 유튜브 영상 플레이어 추가
   appendYoutubeVlog();
   // 모든 플레이어가 준비되면 스피너 제거
