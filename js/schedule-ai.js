@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 전체 타임라인을 감싸는 컨테이너
     const timelineContainer = document.createElement("div");
-    // 인라인 스타일로 중앙선 구현을 위한 기본 설정
     timelineContainer.style.position = "relative";
     timelineContainer.style.width = "100%";
     timelineContainer.style.padding = "20px 0";
@@ -92,21 +91,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     verticalLine.style.height = "100%";
     verticalLine.style.backgroundColor = "black";
 
-    // 타임라인 컨테이너에 세로 라인 추가
     timelineContainer.appendChild(verticalLine);
 
     // 각 Day(일자)마다 타임라인의 노드(점)와 내용 카드 생성
     scheduleData.forEach((daySchedule, index) => {
-      // index가 짝수면 왼쪽, 홀수면 오른쪽에 배치
       const side = index % 2 === 0 ? "left" : "right";
 
-      // 날짜(또는 Day)별 컨테이너
+      // 날짜별 컨테이너
       const dayWrapper = document.createElement("div");
+      dayWrapper.classList.add("timeline-item"); // 애니메이션 적용
       dayWrapper.style.position = "relative";
       dayWrapper.style.width = "50%";
       dayWrapper.style.padding = "10px 20px";
       dayWrapper.style.boxSizing = "border-box";
-      dayWrapper.style.textAlign = "left"; //  side === "left" ? "right" :
+      dayWrapper.style.opacity = "0"; // 초기 상태
+      dayWrapper.style.transform = "translateY(20px)"; // 초기 애니메이션 상태
+
       if (side === "left") {
         dayWrapper.style.left = "0";
       } else {
@@ -115,56 +115,55 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // 타임라인 점(원)
       const circle = document.createElement("div");
+      circle.classList.add("circle"); // 원 애니메이션 적용
       circle.style.position = "absolute";
       circle.style.top = "10px";
-      // 왼쪽 배치 시 원을 오른쪽 끝, 오른쪽 배치 시 왼쪽 끝에 둠
+      circle.style.width = "18px";
+      circle.style.height = "18px";
+      circle.style.backgroundColor = "black";
+      circle.style.borderRadius = "50%";
+      circle.style.transform = "scale(0)"; // 초기 상태
+
       if (side === "left") {
         circle.style.right = "-9px";
       } else {
         circle.style.left = "-9px";
       }
-      circle.style.width = "18px";
-      circle.style.height = "18px";
-      circle.style.backgroundColor = "black";
-      circle.style.borderRadius = "50%";
 
-      // Day(또는 날짜) 제목
+      // Day 제목
       const heading = document.createElement("h5");
       heading.style.fontWeight = "bold";
       heading.textContent = `Day ${daySchedule.day}: ${daySchedule.title}`;
 
-      // 일정 목록 HTML
+      // 일정 목록
       const scheduleItemsHTML = daySchedule.schedule
         .map((item) => {
           const addressText = item.address
             ? `<br><small>주소: ${item.address}</small><button class="copy-address-btn" data-address="${item.address}" 
-                       style="margin-left: 5px; padding: 2px 6px; font-size: 12px; cursor: pointer;">
-                       📋</button>`
+                           style="margin-left: 5px; padding: 2px 6px; font-size: 12px; cursor: pointer;">
+                           📋</button>`
             : "";
           return `
-            <p>
-              <strong><small>${item.time} - ${item.activity} (${item.destination})</small></strong>
-              <br><small>${item.description}</small>
-              ${addressText}
-            </p>
-          `;
+                <p>
+                    <strong><small>${item.time} - ${item.activity} (${item.destination})</small></strong>
+                    <br><small>${item.description}</small>
+                    ${addressText}
+                </p>
+            `;
         })
         .join("");
 
-      // 일정 목록을 담는 div
+      // 일정 목록 컨테이너
       const scheduleItemsContainer = document.createElement("div");
       scheduleItemsContainer.innerHTML = scheduleItemsHTML;
 
-      // 타임라인 점과 제목, 일정 목록을 순서대로 배치
+      // 요소 추가
       dayWrapper.appendChild(circle);
       dayWrapper.appendChild(heading);
       dayWrapper.appendChild(scheduleItemsContainer);
-
-      // 타임라인 컨테이너에 이 Day의 모든 내용 추가
       timelineContainer.appendChild(dayWrapper);
     });
 
-    // 최종적으로 scheduleContainer에 타임라인 전체를 추가
     scheduleContainer.appendChild(timelineContainer);
 
     // 일정 복사 버튼 이벤트 등록
@@ -173,12 +172,24 @@ document.addEventListener("DOMContentLoaded", async function () {
       copyScheduleToClipboard(scheduleData)
     );
 
-    // 주소 복사 버튼 이벤트 등록
-    document.querySelectorAll(".copy-address-btn").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        copyAddressToClipboard(this.dataset.address);
-      });
-    });
+    // Intersection Observer로 스크롤 애니메이션 적용
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+            entry.target.querySelector(".circle").style.transform = "scale(1)";
+            observer.unobserve(entry.target); // 한 번 등장하면 다시 감지 안 함
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    document
+      .querySelectorAll(".timeline-item")
+      .forEach((item) => observer.observe(item));
   }
 
   const scheduleData = await fetchSchedule();
