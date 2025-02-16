@@ -177,25 +177,37 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.querySelectorAll(".copy-address-btn").forEach((btn) => {
       btn.addEventListener("click", function () {
         copyAddressToClipboard(this.dataset.address);
-
         // 🔹 복사 완료 스타일 변경
         this.innerHTML = "✅"; // 텍스트 변경
-
         // 2초 후 원래 상태로 복귀
         setTimeout(() => {
           this.innerHTML = "📋";
         }, 2000);
       });
-
       // 🔹 호버 효과 추가
       btn.addEventListener("mouseover", function () {
         this.style.backgroundColor = "#e2e6ea"; // 연한 회색
       });
-
       btn.addEventListener("mouseout", function () {
         this.style.backgroundColor = "#f8f9fa"; // 원래 색상 복귀
       });
     });
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+            entry.target.querySelector(".circle").style.transform = "scale(1)";
+            observer.unobserve(entry.target); // 한 번 등장하면 다시 감지 안 함
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    document
+      .querySelectorAll(".timeline-item")
+      .forEach((item) => observer.observe(item));
   }
 
   const scheduleData = await fetchSchedule();
