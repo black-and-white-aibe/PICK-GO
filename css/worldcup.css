@@ -2,28 +2,50 @@
 .card-container {
   display: flex;
   justify-content: center;
-  gap: 60px;
-  margin-top: 20px;
   flex-wrap: wrap;
+  gap: 60px;
+  height: 540px;
+  max-height: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
+
 /* 카드 */
 .card {
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  position: relative; /* 오버레이 배치를 위해 position: relative */
   width: 45%;
-  height: 55vh;
+  height: 540px; /* 카드 높이 고정 */
+  overflow: hidden; /* 넘치는 이미지는 숨김 */
   cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-/* 카드 호버링 */
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 카드 호버 효과 */
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
 /* 카드 안에 들어가는 내용 */
 .card-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute; /* 오버레이를 위해 절대 위치 */
+  bottom: 0; /* 하단에 붙이기 */
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  /* 필요에 따라 배경색이나 투명도 추가 가능 */
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #fff;
 }
+
 /* 카드 글자 */
 .card-title {
   font-size: 3vh;
